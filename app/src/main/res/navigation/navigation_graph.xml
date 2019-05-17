@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/fragmentA">
+
+    <fragment
+        android:id="@+id/fragmentA"
+        android:name="com.tayfuncesur.stepperdemo.frags.FragmentA"
+        android:label="Fragment A"
+        tools:layout="@layout/fragment_a">
+        <action
+            android:id="@+id/fragmentAtoB"
+            app:destination="@id/fragmentB"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentB"
+        android:name="com.tayfuncesur.stepperdemo.frags.FragmentB"
+        android:label="Fragment B"
+        tools:layout="@layout/fragment_b">
+        <action
+            android:id="@+id/fragmentBtoC"
+            app:destination="@id/fragmentC"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/fragmentC"
+        android:name="com.tayfuncesur.stepperdemo.frags.FragmentC"
+        android:label="Fragment C"
+        tools:layout="@layout/fragment_c">
+        <action
+                android:id="@+id/fragmentCtoD"
+                app:destination="@id/fragmentD"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/fragmentD"
+            android:name="com.tayfuncesur.stepperdemo.frags.FragmentD"
+            android:label="Fragment D"
+            tools:layout="@layout/fragment_d">
+        <action
+                android:id="@+id/fragmentDtoE"
+                app:destination="@id/fragmentE"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/fragmentE"
+            android:name="com.tayfuncesur.stepperdemo.frags.FragmentE"
+            android:label="Fragment E"
+            tools:layout="@layout/fragment_e">
+    </fragment>
+
+</navigation>
