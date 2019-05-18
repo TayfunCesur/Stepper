@@ -32,7 +32,7 @@ dependencies {
 
 ## Sample Usage  
 
-A sample project in Kotlin that demonstrates the lib usage [here](https://github.com/TayfunCesur/Stepper/tree/master/app).
+A sample project in Kotlin that demonstrates the lib usage [here]. Depends on your usa case, in general you must use the Stepper in your activity, and you must call it from your fragment. (https://github.com/TayfunCesur/Stepper/tree/master/app).
 <img height="500" align="right" src="/art/stepper.gif"></img>
 ```
     <com.tayfuncesur.stepper.Stepper
