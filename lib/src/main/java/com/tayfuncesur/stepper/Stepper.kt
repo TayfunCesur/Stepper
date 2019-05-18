@@ -6,7 +6,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.animation.Animation
 import android.widget.RelativeLayout
-import com.tayfuncesur.stepper.R
 
 
 class Stepper @JvmOverloads constructor(
@@ -85,12 +84,12 @@ class Stepper @JvmOverloads constructor(
     }
 
     init {
-        if (childCount > 1) throw IllegalStateException("Stepper must have only one child layout")
+        if (childCount != 1) throw IllegalStateException("Stepper must have only one child layout")
 
-        val a = context.obtainStyledAttributes(attrs, R.styleable.Stepper, defStyleAttr, 0)
-        stepCount = a.getInt(R.styleable.Stepper_stepCount, 5)
-        defaultDuration = a.getInt(R.styleable.Stepper_duration, 500).toLong()
-        a.recycle()
+        val attr = context.obtainStyledAttributes(attrs, R.styleable.Stepper, defStyleAttr, 0)
+        stepCount = attr.getInt(R.styleable.Stepper_stepCount, 5)
+        defaultDuration = attr.getInt(R.styleable.Stepper_duration, 500).toLong()
+        attr.recycle()
 
         post {
             val metrics = context.resources.displayMetrics
