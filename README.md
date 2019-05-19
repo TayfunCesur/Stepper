@@ -6,6 +6,7 @@
   <a href="https://circleci.com/gh/TayfunCesur/Stepper"><img src="https://circleci.com/gh/TayfunCesur/Stepper.svg?style=svg" alt="Build Status"></a>
     <a href="https://android-arsenal.com/api?level=16"><img src="https://img.shields.io/badge/API-16%2B-orange.svg?style=flat" alt="api"></a>
     <a href="https://jitpack.io/#TayfunCesur/Stepper"><img src="https://jitpack.io/v/TayfunCesur/Stepper.svg" alt="jitpack"></a>
+  <a href="https://android-arsenal.com/details/1/7672"><img src="https://img.shields.io/badge/Android%20Arsenal-Stepper-green.svg?style=flat" alt="jitpack"></a>
 </p>
 
 ### Summary  
