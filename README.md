@@ -27,7 +27,7 @@ Add the dependency:
 
 ```groovy 
 dependencies {
-    implementation 'com.github.TayfunCesur:Stepper:1.0.1'
+    implementation 'com.github.TayfunCesur:Stepper:1.0.2'
 }
 ``` 
 
