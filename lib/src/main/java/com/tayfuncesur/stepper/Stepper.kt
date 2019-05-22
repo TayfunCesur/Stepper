@@ -85,14 +85,14 @@ class Stepper @JvmOverloads constructor(
 
     init {
 
-
+        val attr = context.obtainStyledAttributes(attrs, R.styleable.Stepper, defStyleAttr, 0)
+        stepCount = attr.getInt(R.styleable.Stepper_stepCount, 5)
+        defaultDuration = attr.getInt(R.styleable.Stepper_duration, 500).toLong()
+        attr.recycle()
         post {
             if (childCount != 1) throw IllegalStateException("Stepper must have only one child layout")
 
-            val attr = context.obtainStyledAttributes(attrs, R.styleable.Stepper, defStyleAttr, 0)
-            stepCount = attr.getInt(R.styleable.Stepper_stepCount, 5)
-            defaultDuration = attr.getInt(R.styleable.Stepper_duration, 500).toLong()
-            attr.recycle()
+
             val metrics = context.resources.displayMetrics
             screenWidth = metrics.widthPixels
             getChildAt(0).layoutParams = LayoutParams((screenWidth / stepCount), getChildAt(0).height)
