@@ -25,6 +25,8 @@ class FragmentA : Fragment() {
         PushDownAnim.setPushDownAnimTo(nextToB).setScale(PushDownAnim.MODE_STATIC_DP,5F).setOnClickListener {
             view.findNavController().navigate(R.id.fragmentAtoB)
             activity?.findViewById<Stepper>(R.id.Stepper)?.forward()
+            activity?.findViewById<Stepper>(R.id.StepperRtl)?.forward()
+            activity?.findViewById<Stepper>(R.id.StepperAuto)?.forward()
         }
     }
 }

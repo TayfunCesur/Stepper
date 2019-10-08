@@ -1,22 +1,41 @@
+@file:Suppress("RedundantGetter")
+
 package com.tayfuncesur.stepper
 
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
+import android.os.Build
+import android.support.annotation.RequiresApi
+import android.support.v4.text.TextUtilsCompat
+import android.support.v4.view.ViewCompat
 import android.util.AttributeSet
+import android.view.ViewGroup
 import android.view.animation.Animation
 import android.widget.RelativeLayout
+import java.util.*
+import kotlin.math.abs
 
 
+@RequiresApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 class Stepper @JvmOverloads constructor(
     context: Context, attrs: AttributeSet? = null, defStyleAttr: Int = 0
 ) : RelativeLayout(context, attrs, defStyleAttr) {
 
-    private var stepCount: Int = 5
+    enum class Direction {
+        NO_RTL, AUTO, FORCE
+    }
+
+    private var stepCount: Int
 
     private var currentStepCount: Int = 1
 
-    private var defaultDuration: Long = 500
+    private var defaultDuration: Long
+
+    private var layoutDirection: Direction = Direction.NO_RTL
+
+    val isLeftToRight =
+        TextUtilsCompat.getLayoutDirectionFromLocale(Locale.getDefault()) == ViewCompat.LAYOUT_DIRECTION_LTR
 
     private var screenWidth: Int = 0
 
@@ -30,21 +49,6 @@ class Stepper @JvmOverloads constructor(
 
     private lateinit var progressAnimationListener: Animator.AnimatorListener
 
-    fun getStepCount(): Int {
-        return stepCount
-    }
-
-    fun setStepCount(stepCount: Int) {
-        this.stepCount = stepCount
-    }
-
-    fun getDefaultDuration(): Long {
-        return defaultDuration
-    }
-
-    fun setDefaultDuration(defaultDuration: Long) {
-        this.defaultDuration = defaultDuration
-    }
 
     fun addOnCompleteListener(addOnCompleteListener: () -> Unit) {
         this.completeListener = addOnCompleteListener
@@ -80,40 +84,69 @@ class Stepper @JvmOverloads constructor(
         })
 
         animator.duration = defaultDuration
+
         return animator
     }
 
     init {
-
-        val attr = context.obtainStyledAttributes(attrs, R.styleable.Stepper, defStyleAttr, 0)
-        stepCount = attr.getInt(R.styleable.Stepper_stepCount, 5)
-        defaultDuration = attr.getInt(R.styleable.Stepper_duration, 500).toLong()
-        attr.recycle()
-        post {
-            if (childCount != 1) throw IllegalStateException("Stepper must have only one child layout")
+        with(context.obtainStyledAttributes(attrs, R.styleable.Stepper, defStyleAttr, 0)) {
+            try {
+                stepCount = getInt(R.styleable.Stepper_stepCount, 5)
+                defaultDuration = getInt(R.styleable.Stepper_duration, 500).toLong()
+                layoutDirection = Direction.values()[getInt(R.styleable.Stepper_useRTL, 0)]
 
 
-            val metrics = context.resources.displayMetrics
-            screenWidth = metrics.widthPixels
-            getChildAt(0).layoutParams = LayoutParams((screenWidth / stepCount), getChildAt(0).height)
+                when (layoutDirection) {
+                    Direction.FORCE -> rotate()
+                    Direction.AUTO -> {
+                        if (resources.getBoolean(R.bool.useRtl)) {
+                            rotate()
+                        }
+                    }
+                }
+            } finally {
+                recycle()
+            }
+
+
+            post {
+                if (childCount != 1) throw IllegalStateException("Stepper must have only one child layout")
+                if (layoutParams.width != ViewGroup.LayoutParams.MATCH_PARENT) throw IllegalStateException(
+                    "Stepper must have match_parent width for correct support of RTL/LTR"
+                )
+
+                val metrics = context.resources.displayMetrics
+                screenWidth = metrics.widthPixels
+
+                getChildAt(0).layoutParams = (getChildAt(0).layoutParams as LayoutParams).apply {
+                    width = (screenWidth / stepCount)
+
+
+                }
+            }
         }
+    }
+
+    private fun rotate() {
+        this@Stepper.rotation = (180f)
     }
 
     fun forward() {
         if (inProgress) {
             stop()
         }
+
         if (!isRunning) {
             currentStepCount++
             getValueAnimator().start()
         }
-
     }
 
     fun back() {
         if (inProgress) {
             stop()
         }
+
         if (!isRunning) {
             currentStepCount--
             getValueAnimator().start()
@@ -128,7 +161,9 @@ class Stepper @JvmOverloads constructor(
                     screenWidth
                 )
             )
+
             var leftOffset = 1
+
             progressValueAnimator.addUpdateListener { valueAnimator ->
                 val currentVal = valueAnimator.animatedValue as Int
                 val layoutParams = getChildAt(0).layoutParams as LayoutParams
@@ -156,12 +191,13 @@ class Stepper @JvmOverloads constructor(
                 override fun onAnimationStart(animation: Animator?) {}
             }
 
-            progressValueAnimator.addListener(progressAnimationListener)
+            progressValueAnimator.apply {
+                addListener(progressAnimationListener)
+                repeatCount = if (loopSize == 0) Animation.INFINITE else loopSize - 1
+                duration = 1000
+                start()
+            }
 
-
-            progressValueAnimator.repeatCount = if (loopSize == 0) Animation.INFINITE else loopSize - 1
-            progressValueAnimator.duration = 1000
-            progressValueAnimator.start()
             inProgress = true
         }
         return this
@@ -169,12 +205,19 @@ class Stepper @JvmOverloads constructor(
 
     fun stop() {
         if (::progressValueAnimator.isInitialized && inProgress) {
-            progressValueAnimator.removeAllListeners()
-            progressValueAnimator.end()
-            progressValueAnimator.cancel()
+            progressValueAnimator.apply {
+                removeAllListeners()
+                end()
+                cancel()
+            }
+
             getChildAt(0).layoutParams =
-                LayoutParams(screenWidth - (screenWidth * Math.abs(currentStepCount - stepCount)), getChildAt(0).height)
+                LayoutParams(
+                    screenWidth - (screenWidth * abs(currentStepCount - stepCount)),
+                    getChildAt(0).height
+                )
         }
+
         isRunning = false
         inProgress = false
 

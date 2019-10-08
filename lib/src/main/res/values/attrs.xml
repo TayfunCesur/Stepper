@@ -3,5 +3,10 @@
     <declare-styleable name="Stepper">
         <attr name="duration" format="integer"/>
         <attr name="stepCount" format="integer"/>
+        <attr name="useRTL" format="enum">
+            <enum name="NO_RTL" value="0"/>
+            <enum name="AUTO" value="1"/>
+            <enum name="FORCE" value="2"/>
+        </attr>
     </declare-styleable>
 </resources>
