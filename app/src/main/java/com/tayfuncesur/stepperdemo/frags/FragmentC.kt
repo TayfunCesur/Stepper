@@ -25,11 +25,15 @@ class FragmentC : Fragment() {
         PushDownAnim.setPushDownAnimTo(nextToD).setScale(PushDownAnim.MODE_STATIC_DP,5F).setOnClickListener {
             view.findNavController().navigate(R.id.fragmentCtoD)
             activity?.findViewById<Stepper>(R.id.Stepper)?.forward()
+            activity?.findViewById<Stepper>(R.id.StepperRtl)?.forward()
+            activity?.findViewById<Stepper>(R.id.StepperAuto)?.forward()
         }
 
         PushDownAnim.setPushDownAnimTo(backArrow).setScale(PushDownAnim.MODE_STATIC_DP,5F).setOnClickListener {
             view.findNavController().popBackStack()
             activity?.findViewById<Stepper>(R.id.Stepper)?.back()
+            activity?.findViewById<Stepper>(R.id.StepperRtl)?.back()
+            activity?.findViewById<Stepper>(R.id.StepperAuto)?.back()
         }
     }
 }

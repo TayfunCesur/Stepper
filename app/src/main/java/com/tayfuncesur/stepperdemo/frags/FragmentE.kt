@@ -11,7 +11,6 @@ import com.tayfuncesur.stepper.Stepper
 import com.tayfuncesur.stepperdemo.R
 import com.thekhaeng.pushdownanim.PushDownAnim
 import kotlinx.android.synthetic.main.fragment_e.*
-import kotlinx.android.synthetic.main.fragment_e.backArrow
 
 class FragmentE : Fragment() {
 
@@ -29,6 +28,16 @@ class FragmentE : Fragment() {
                 activity?.findViewById<View>(R.id.StepperView)?.background =
                     ContextCompat.getDrawable(context!!, R.drawable.success_gradient)
             }
+
+            activity?.findViewById<Stepper>(R.id.StepperRtl)?.progress(3)?.addOnCompleteListener {
+                activity?.findViewById<View>(R.id.StepperViewRtl)?.background =
+                    ContextCompat.getDrawable(context!!, R.drawable.success_gradient)
+            }
+
+            activity?.findViewById<Stepper>(R.id.StepperAuto)?.progress(3)?.addOnCompleteListener {
+                activity?.findViewById<View>(R.id.StepperViewAuto)?.background =
+                    ContextCompat.getDrawable(context!!, R.drawable.success_gradient)
+            }
         }
 
 
@@ -37,9 +46,15 @@ class FragmentE : Fragment() {
             view.findNavController().popBackStack()
             activity?.findViewById<Stepper>(R.id.Stepper)?.stop()
             activity?.findViewById<Stepper>(R.id.Stepper)?.back()
+            activity?.findViewById<Stepper>(R.id.StepperRtl)?.stop()
+            activity?.findViewById<Stepper>(R.id.StepperRtl)?.back()
+            activity?.findViewById<Stepper>(R.id.StepperAuto)?.stop()
+            activity?.findViewById<Stepper>(R.id.StepperAuto)?.back()
         }
         PushDownAnim.setPushDownAnimTo(progressStop).setScale(PushDownAnim.MODE_STATIC_DP, 5F).setOnClickListener {
             activity?.findViewById<Stepper>(R.id.Stepper)?.stop()
+            activity?.findViewById<Stepper>(R.id.StepperRtl)?.stop()
+            activity?.findViewById<Stepper>(R.id.StepperAuto)?.stop()
         }
     }
 }
